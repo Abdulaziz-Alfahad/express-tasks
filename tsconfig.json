@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",                    // Use modern JS features
+    "module": "ESNext",                    // ESM support (important for TypeScript + Express + Prisma)
+    "moduleResolution": "node",            // Node-style module resolution (for imports/exports)
+    "outDir": "./dist",                    // Compiled files will go here
+    "rootDir": "./src",                    // Source files are in the /src folder
+    "strict": true,                        // Enable strict type checking (recommended for better code quality)
+    "esModuleInterop": true,               // Enables compatibility between CommonJS and ES Modules
+    "skipLibCheck": true,                  // Skips type checking for declaration files (speeds up compilation)
+    "resolveJsonModule": true,             // Allows importing JSON files as modules
+    "allowSyntheticDefaultImports": true,  // Allows default imports from non-ESM modules (like CommonJS)
+    "noEmitOnError": true,                 // Prevents emitting JavaScript if there are TypeScript errors
+    "baseUrl": ".",                        // Base URL for module resolution
+    "paths": {                             // Optional: use paths for clean imports
+      "*": ["node_modules/*"]
+    }
+  },
+  "include": ["src/**/*"],                  // Only include the src directory
+  "exclude": ["node_modules", "dist"]       // Exclude node_modules and dist from compilation
+}
