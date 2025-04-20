@@ -22,4 +22,10 @@ export const userSchema = z.object({
     firstName: z.string({required_error: "firstname is required"})
 })
 
+export const userLoginSchema = z.object({
+    username: z.string(),
+    password: z.string()
+})
+
 export type userSchema = z.infer<typeof userSchema>
+export type userLoginSchema = z.infer<typeof userLoginSchema>
