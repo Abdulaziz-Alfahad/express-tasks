@@ -7,13 +7,13 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
 
   if (!token){
     res.status(401).json({ message: "Token required" });
-    return
+    return;
   }  
 
   jwt.verify(token, process.env.JWT_SECRET!, (err, user) => {
     if (err){
         res.status(403).json({ message: "Invalid token" });
-        return
+        return;
     }
     req.user = user;
     next();

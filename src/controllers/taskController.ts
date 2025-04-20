@@ -1,32 +1,31 @@
 import { Request, Response } from 'express';
 import * as taskService from '../services/taskService.js';
 import { taskSchema, updateTaskSchema, paramsSchema} from '../schemas/taskSchema.js';
+import { JwtPayload } from 'jsonwebtoken';
 
 export const getAllTasks = async(req: Request, res: Response) =>{
-    try{
-        let tasks = await taskService.getAllTasks();
-        res.json(tasks);
-        return;
-    }catch(err){
-        if(err) res.json(err);
-        else res.status(500).json({error: "Internal server error"})
-    }
+  try{
+    const user = req.user as JwtPayload
+    let tasks = await taskService.getAllTasks(Number(user.id));
+    res.json(tasks);
+return;
+  }catch(err){
+    if(err) res.json(err);
+    else res.status(500).json({error: "Internal server error"})
+  }
 }
 
-// Controller for creating a new task
 export const createTask = async (req: Request, res: Response) => {
   try {
-    // Validate request body using Zod
-    const validatedData = taskSchema.parse(req.body);  // This will throw if validation fails
-
-    // If data is valid, call service to create task
-    const task = await taskService.createTask(validatedData);
-    res.status(201).json(task); // Return created task
+    const user = req.user as JwtPayload;
+    const userId = Number(user.id)
+    const validatedData = taskSchema.parse(req.body);
+    const task = await taskService.createTask(validatedData, userId);
+    res.status(201).json(task);
     return;
-  } catch (error) {
-    // If validation fails or any other error occurs, send error response
-    if (error instanceof Error) {
-      res.status(400).json({ error: error.message });
+  } catch (err) {
+    if (err) {
+      res.status(400).json({ error: err });
     } else {
       res.status(500).json({ error: 'Internal server error' });
     }

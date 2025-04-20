@@ -1,13 +1,20 @@
 import prisma from '../prisma/prismaClient.js'; // Import prisma client
 import { TaskSchema, updateTaskSchema } from '../schemas/taskSchema.js';
 
-export const getAllTasks = async () =>{
-    return await prisma.task.findMany();
+export const getAllTasks = async (userId: number) =>{
+    return await prisma.task.findMany({
+        where: {userId: userId}
+    });
 }
 
-export const createTask = async (taskData: TaskSchema) => {
+export const createTask = async (taskData: TaskSchema, userId: number) => {
   return await prisma.task.create({
-    data: taskData,
+    data: {
+        name: taskData.name,
+        content: taskData.content ?? null,
+        status: taskData.status,
+        user: { connect: { id: userId } }
+    }
   });
 };
 
