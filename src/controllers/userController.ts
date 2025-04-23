@@ -1,11 +1,12 @@
 import { Request, Response } from 'express';
 import * as userService from '../services/userService.js';
 import { userSchema, userLoginSchema } from '../schemas/userSchema.js';
-import jwt from "jsonwebtoken";
+import { generateToken } from '../utils/auth.js';
 export const createUser = async (req: Request, res: Response) =>{
     try{
         const validatedData = userSchema.parse(req.body);
         const createdUser = await userService.createUser(validatedData);
+        const token = generateToken(createdUser.id, createdUser.email, createdUser.username);
         console.log(`User created ${JSON.stringify(createdUser, null, 2)}`)
         res.json({"success": `User ${createdUser.username} is created successfully`});
         return
@@ -28,11 +29,7 @@ export const userLogin = async (req: Request, res: Response) =>{
             res.status(401).json({ message: "Invalid credentials" });
             return;
         } 
-        const token = jwt.sign(
-            { id: user.id, email: user.email },
-            process.env.JWT_SECRET!,
-            { expiresIn: "1h" }
-          );
+        const token = generateToken(user.id, user.email, user.username);
         res.json({ token });
         return
     }catch(err){
