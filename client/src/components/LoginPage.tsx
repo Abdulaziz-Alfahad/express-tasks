@@ -1,4 +1,4 @@
-import axios from "axios";
+import axiosInstance from "../api/axiosInstance";
 import { useState } from "react";
 
 function LoginPage(){
@@ -10,7 +10,7 @@ function LoginPage(){
         e.preventDefault();
         setError(null);
         try{
-            const response = await axios.post('http://localhost:5000/user/login', {
+            const response = await axiosInstance.post('http://localhost:5000/user/login', {
                 username,
                 password
             })
