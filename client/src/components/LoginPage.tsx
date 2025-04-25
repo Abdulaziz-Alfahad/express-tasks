@@ -1,11 +1,13 @@
 import axiosInstance from "../api/axiosInstance";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function LoginPage(){
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState<String | null>(null);
-    
+    const navigate = useNavigate();
+
     const handleSubmit = async (e: React.FormEvent)=>{
         e.preventDefault();
         setError(null);
@@ -16,7 +18,7 @@ function LoginPage(){
             })
             const { token } = response.data;
             localStorage.setItem('token', token);
-            alert("You are signed in")
+            navigate('/');
         }catch(err:any){
             console.log("Sign in error:", err);
             if(err.response){
