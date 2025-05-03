@@ -6,9 +6,12 @@ import NotFoundPage from "./pages/error/NotFoundPage";
 import GuestRoute from "./components/auth/GuestRoute";
 import DashBoardPage from "./pages/DashBoardPage";
 import SignUpPage from "./pages/SignUpPage";
+import NavBar from "./components/NavBar";
 function App(){
     return(
-        <Router>
+        <div className="main-div flexy">
+            <NavBar></NavBar>
+            <Router>
              <Routes>
                 <Route path='/dashboard' element={<ProtectedRoute><DashBoardPage></DashBoardPage></ProtectedRoute>}></Route>
                 <Route path='/' element={<ProtectedRoute><DashBoardPage></DashBoardPage></ProtectedRoute>}></Route>
@@ -18,6 +21,8 @@ function App(){
                 <Route path="*" element={<Navigate to="/404" replace />} />
              </Routes>
         </Router>
+        </div>
+        
     )
 }
 

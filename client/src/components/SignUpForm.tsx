@@ -14,10 +14,12 @@ export default function SignUpForm(){
     const handleSubmit = async (e: React.FormEvent)=>{
         try{
             e.preventDefault();
+            // This part is to prevent lastName from being an empty string in case of no input.
             const payload: any = { firstName, username, password, email };
             if(lastName){
                 payload.lastName = lastName;
             }
+
             const response = await axiosInstance.post('http://localhost:5000/user/create',payload);
             const logIn = await axiosInstance.post('http://localhost:5000/user/login', {
                 username,
@@ -40,15 +42,16 @@ export default function SignUpForm(){
     }
 
     return(
-        <form onSubmit={handleSubmit}>
+        <div className="form-container">
+            <form onSubmit={handleSubmit}>
             <h2>Sign up</h2>
-            <div>
+            <div className="input-container">
                 <label>FirstName</label>
                 <input required type="text" value={firstName} onChange={(e) =>{setFirstName(e.target.value)}} />
                 <label>LastName</label>
                 <input type="text" value={lastName} onChange={(e) =>{setLastName(e.target.value)}} />
             </div>
-            <div>
+            <div className="input-container">
                 <label>Username</label>
                 <input required type="text" value={username} onChange={(e) =>{setUsername(e.target.value)}} />
             </div>
@@ -63,5 +66,6 @@ export default function SignUpForm(){
             <button type="submit">Sign up</button>
             {error && <p style={{color: 'red'}}>{error}</p>}
         </form>
+        </div>
     )
 }

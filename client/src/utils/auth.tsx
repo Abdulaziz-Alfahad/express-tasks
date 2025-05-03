@@ -11,7 +11,7 @@ export function isTokenExpired(token: string): boolean{
     return decoded.exp < currentTime;
 }
 
-export function handleExpiredToken() {
+export function deleteToken() {
     localStorage.removeItem("token");
     // window.location.href = "/login";
 }

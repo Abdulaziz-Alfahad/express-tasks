@@ -1,5 +1,5 @@
 import axios from "axios";
-import { handleExpiredToken, isTokenExpired } from "../utils/auth";
+import { deleteToken, isTokenExpired } from "../utils/auth";
 const axiosInstance = axios.create({
     baseURL: "http://localhost:5000",
     withCredentials: false
@@ -10,7 +10,7 @@ axiosInstance.interceptors.request.use(
         const token = localStorage.getItem("token");
         if(token){
             if(isTokenExpired(token)){
-                handleExpiredToken();
+                deleteToken();
                 throw new Error("Token expired");
             }
             config.headers['Authorization'] = `Bearer ${token}`;
