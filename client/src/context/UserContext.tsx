@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
 
 interface User {
     id: number,
@@ -16,9 +16,22 @@ const UserContext = createContext<UserContextType | undefined> (undefined);
 export const UserProvider = ({children} : {children: ReactNode})=>{
     const [user, setUser] = useState<User | null>(null);
     
-    const login = (newUser: User) => setUser(newUser);
+    useEffect(()=>{
+        const storedUser = localStorage.getItem("user");
+        if(storedUser){
+            setUser(JSON.parse(storedUser));
+        }
+    },[])
 
-    const logout = () => setUser(null);
+    const login = (newUser: User) =>{
+        setUser(newUser);
+        localStorage.setItem("user", JSON.stringify(newUser));
+    } 
+
+    const logout = () =>{
+        setUser(null);
+        localStorage.removeItem("user");
+    } 
 
     return (<UserContext.Provider value={{user, login, logout}}>
         {children};

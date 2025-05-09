@@ -11,6 +11,7 @@ axiosInstance.interceptors.request.use(
         if(token){
             if(isTokenExpired(token)){
                 deleteToken();
+                localStorage.removeItem("user");
                 throw new Error("Token expired");
             }
             config.headers['Authorization'] = `Bearer ${token}`;
